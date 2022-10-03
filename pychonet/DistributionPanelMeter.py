@@ -8,6 +8,7 @@ ENL_DPM_DAY_GET_HISTORY = 0xC5
 ENL_DPM_INSTANT_ENG = 0xC6
 ENL_DPM_INSTANT_CUR = 0xC7
 ENL_DPM_INSTANT_VOL = 0xC8
+ENL_DPM_CHANNEL_SIMPLEX_INSTANT_ENG = 0xB7
 
 def _0287C2(edt):
     op_mode = int.from_bytes(edt, "big")
@@ -21,6 +22,12 @@ def _0287C2(edt):
               0x0C: 1000,
               0x0D: 10000}
     return values.get(op_mode, None)
+
+def _0287B7(edt):
+    values = []
+    for x in range(0,edt[1]):
+        values.append(int.from_bytes(edt[x*4+2:(x+1)*4+2], "big", signed=True))
+    return {"start": edt[0], "range": edt[1], "values": values}
 
 # def _0287xx(edt):
 #     return "Not implemented"
@@ -92,7 +99,7 @@ class DistributionPanelMeter(EchonetInstance):
 #       0xB4: _0287xx,     # "Channel range specification for instantaneous current measurement (simplex)"
 #       0xB5: _0287xx,     # "Measured instantaneous current list (simplex)"
 #       0xB6: _0287xx,     # "Channel range specification for instantaneous power consumption measurement (simplex)"
-#       0xB7: _0287xx,     # "Measured instantaneous power consumption list (simplex)"
+        0xB7: _0287B7,     # "Measured instantaneous power consumption list (simplex)"
         0xB8: _int,        # "Number of measurement channels (duplex)"
 #       0xB9: _0287xx,     # "Channel range specification for cumulative amount of electric power consumption measurement (duplex)"
 #       0xBA: _0287xx,     # "Measured cumulative amount of electric power consumption list (duplex)"

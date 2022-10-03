@@ -1276,6 +1276,9 @@ EPC_CODE = {
         0xFD: {  # Switch (supporting JEM-A/HA terminals) class
             0x80: "Operation status",
             0xE0: "Connected device",
+        },
+        0xFF: {
+            0x80: "Operation status"
         }
     },
     0x06: {  # AV-related device class group
